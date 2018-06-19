@@ -1,0 +1,30 @@
+# libiconv-full
+已添加gbk转码支持. 使用需在引用模块的Makefile中添加
+```
+DEPENDS:=+libiconv-full
+```
+和编译相关支持
+```
+ICONV_PREFIX:=$(STAGING_DIR)/usr/lib/libiconv-full
+ICONV_FULL:=1
+
+INTL_PREFIX:=$(STAGING_DIR)/usr/lib/libintl-full
+INTL_FULL:=1
+
+PKG_CONFIG_DEPENDS += CONFIG_BUILD_NLS
+PKG_BUILD_DEPENDS += !BUILD_NLS:libiconv !BUILD_NLS:libintl
+
+ICONV_DEPENDS:=+BUILD_NLS:libiconv-full
+ICONV_CFLAGS:=-I$(ICONV_PREFIX)/include
+ICONV_CPPFLAGS:=-I$(ICONV_PREFIX)/include
+ICONV_LDFLAGS:=-L$(ICONV_PREFIX)/lib
+
+INTL_DEPENDS:=+BUILD_NLS:libintl-full
+INTL_CFLAGS:=-I$(INTL_PREFIX)/include
+INTL_CPPFLAGS:=-I$(INTL_PREFIX)/include
+INTL_LDFLAGS:=-L$(INTL_PREFIX)/lib
+
+TARGET_CFLAGS += $(ICONV_CFLAGS) $(INTL_CFLAGS)
+TARGET_CPPFLAGS += $(ICONV_CFLAGS) $(INTL_CPPFLAGS)
+TARGET_LDFLAGS += $(ICONV_LDFLAGS) $(INTL_LDFLAGS)
+```
